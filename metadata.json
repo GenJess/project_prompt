@@ -1,0 +1,5 @@
+{
+  "name": "Copy of Copy of Copy of Image to Prompt",
+  "description": "An application that analyzes an uploaded image using Gemini to generate a highly accurate and structured JSON prompt for recreating it. It's the first step towards a suite of tools for mastering generative AI communication.",
+  "requestFramePermissions": []
+}
