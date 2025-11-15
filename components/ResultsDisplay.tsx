@@ -1,6 +1,7 @@
 import React from 'react';
 import { PromptAnalysis } from './PromptAnalysis';
 import type { PromptAnalysisItem } from '../types';
+import { TrophyIcon } from './icons/TrophyIcon';
 
 interface ImageState {
   dataUrl: string;
@@ -36,7 +37,10 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       {/* Top Section: Score + CTA */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className={`text-center sm:text-left`}>
-          <p className="text-lg font-medium text-gray-400">Your Match Score</p>
+            <div className="flex items-center justify-center sm:justify-start gap-3">
+                <TrophyIcon className="w-8 h-8 text-yellow-400" />
+                <p className="text-lg font-medium text-gray-400">Your Match Score</p>
+            </div>
           <p className={`text-7xl font-bold ${getScoreColor(score)}`}>{score}%</p>
         </div>
         <button

@@ -14,6 +14,8 @@ import {
 } from '../services/geminiService';
 import { fileToBase64 } from '../utils/fileUtils';
 import type { PromptAnalysisItem } from '../types';
+import Hyperspeed from '../components/ui/Hyperspeed';
+import { hyperspeedPresets } from '../components/ui/hyperspeedPresets';
 
 type GameState = 'selection' | 'prompting' | 'loading' | 'results';
 
@@ -160,7 +162,7 @@ const GymPage: React.FC<{ onNavigateHome: () => void }> = ({ onNavigateHome }) =
       default:
         return (
           <div className="w-full flex flex-col items-center space-y-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-100">Prompting Gym</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-100 tracking-tighter">Prompting Gym</h1>
             <p className="text-lg text-gray-400">Choose a difficulty or upload your own image to start.</p>
             {error && <p className="text-red-400 bg-red-900/20 border border-red-500/30 p-3 rounded-lg">{error}</p>}
             <DifficultySelector onSelect={handleDifficultySelect} isLoading={false} />
@@ -176,9 +178,16 @@ const GymPage: React.FC<{ onNavigateHome: () => void }> = ({ onNavigateHome }) =
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-200 font-sans flex flex-col relative">
+    <div className="relative min-h-screen w-full bg-black text-gray-200 font-sans flex flex-col items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 -z-10 pointer-events-none">
+            <Hyperspeed effectOptions={hyperspeedPresets.five} />
+        </div>
+        <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-10 left-1/2 size-full -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(129,140,248,0.15),transparent_50%)] blur-[60px]"
+        />
       {gameState === 'loading' && <LoadingOverlay message={loadingMessage} />}
-      <header className="absolute top-4 left-4 z-10">
+      <header className="absolute top-4 left-4 z-20">
         <button
           onClick={gameState === 'prompting' || gameState === 'results' ? handleReset : onNavigateHome}
           className="flex items-center space-x-2 bg-gray-800/50 hover:bg-gray-700/70 backdrop-blur-sm text-sm text-gray-300 font-medium px-4 py-2 rounded-lg transition-colors"
@@ -188,7 +197,7 @@ const GymPage: React.FC<{ onNavigateHome: () => void }> = ({ onNavigateHome }) =
           <span>{gameState === 'prompting' || gameState === 'results' ? 'New Challenge' : 'Home'}</span>
         </button>
       </header>
-      <main className="container mx-auto px-4 flex-1 flex items-center justify-center py-20">
+      <main className="relative z-10 container mx-auto px-4 flex-1 flex items-center justify-center py-20 w-full">
         {renderContent()}
       </main>
     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { GlowCard } from './ui/spotlight-card';
 
 const difficulties = [
   { level: 1, name: 'Very Easy', description: 'Simple subjects, clear style.' },
@@ -8,6 +9,8 @@ const difficulties = [
   { level: 5, name: 'Very Hard', description: 'Intricate concepts and artistic flair.' },
 ];
 
+const glowColors = ['blue', 'green', 'yellow', 'orange', 'red'] as const;
+
 interface DifficultySelectorProps {
   onSelect: (difficulty: string) => void;
   isLoading: boolean;
@@ -15,18 +18,23 @@ interface DifficultySelectorProps {
 
 export const DifficultySelector: React.FC<DifficultySelectorProps> = ({ onSelect, isLoading }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 w-full max-w-5xl">
-      {difficulties.map(({ level, name, description }) => (
-        <button
-          key={level}
-          onClick={() => onSelect(name)}
-          disabled={isLoading}
-          className="group relative p-4 bg-gray-900 border border-gray-800 rounded-lg text-left hover:bg-gray-800 hover:border-indigo-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950"
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 w-full max-w-6xl">
+       {difficulties.map(({ level, name, description }, index) => (
+        <div 
+          key={level} 
+          onClick={() => !isLoading && onSelect(name)} 
+          className={isLoading ? 'cursor-not-allowed' : 'cursor-pointer'}
         >
-          <p className="text-sm font-bold text-indigo-400">Level {level}</p>
-          <h3 className="text-lg font-semibold text-gray-200 mt-1">{name}</h3>
-          <p className="text-xs text-gray-500 mt-2">{description}</p>
-        </button>
+          <GlowCard 
+            glowColor={glowColors[index % glowColors.length]} 
+            className={`p-6 flex flex-col text-left h-full transition-all duration-300 ${isLoading ? 'opacity-50' : 'hover:scale-105'}`}
+            customSize
+          >
+            <p className="text-sm font-bold text-indigo-400">Level {level}</p>
+            <h3 className="text-lg font-semibold text-gray-200 mt-1">{name}</h3>
+            <p className="text-xs text-gray-500 mt-2 flex-grow">{description}</p>
+          </GlowCard>
+        </div>
       ))}
     </div>
   );

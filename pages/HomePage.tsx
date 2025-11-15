@@ -19,7 +19,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             aria-hidden="true"
             className="pointer-events-none absolute -top-10 left-1/2 size-full -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(129,140,248,0.15),transparent_50%)] blur-[60px]"
         />
-        <div className="text-center">
+        <div className="text-center z-10">
             <h1 className="text-6xl md:text-8xl font-bold text-gray-100 tracking-tighter">
                 Promptry
             </h1>

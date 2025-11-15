@@ -222,5 +222,4 @@ export const hyperspeedPresets = {
       sticks: 0xfdfdf0
     }
   }
-// FIX: Add 'as const' to ensure TypeScript infers array properties as tuples, resolving type conflicts.
 } as const;

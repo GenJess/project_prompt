@@ -18,8 +18,10 @@ interface Colors {
   background: number;
   shoulderLines: number;
   brokenLines: number;
-  leftCars: number[];
-  rightCars: number[];
+  // FIX: Use readonly array for compatibility with `as const` presets.
+  leftCars: readonly number[];
+  // FIX: Use readonly array for compatibility with `as const` presets.
+  rightCars: readonly number[];
   sticks: number;
 }
 
@@ -40,8 +42,6 @@ interface HyperspeedOptions {
   shoulderLinesWidthPercentage: number;
   brokenLinesWidthPercentage: number;
   brokenLinesLengthPercentage: number;
-  // FIX: Update tuple types to be readonly to match the inferred type of presets defined with `as const`.
-  // This makes the component more flexible and correctly represents the immutable nature of the presets.
   lightStickWidth: readonly [number, number];
   lightStickHeight: readonly [number, number];
   movingAwaySpeed: readonly [number, number];
@@ -409,10 +409,8 @@ const distortion_vertex = `
   }
 `;
 
-// FIX: Update function signature to accept readonly tuples, as this function does not mutate its arguments.
 function random(base: number | readonly [number, number]): number {
   if (Array.isArray(base)) {
-    // FIX: Using direct index access on the tuple to prevent potential type inference issues with destructuring that caused arithmetic errors.
     return Math.random() * (base[1] - base[0]) + base[0];
   }
   return Math.random() * base;
@@ -436,8 +434,8 @@ function lerp(current: number, target: number, speed = 0.1, limit = 0.001): numb
 class CarLights {
   webgl: App;
   options: HyperspeedOptions;
-  colors: number[] | THREE.Color;
-  // FIX: Update property and constructor parameter types to readonly tuples.
+  // FIX: Use readonly array for compatibility with `as const` presets.
+  colors: readonly number[] | THREE.Color;
   speed: readonly [number, number];
   fade: THREE.Vector2;
   mesh!: THREE.Mesh<THREE.InstancedBufferGeometry, THREE.ShaderMaterial>;
@@ -445,7 +443,8 @@ class CarLights {
   constructor(
     webgl: App,
     options: HyperspeedOptions,
-    colors: number[] | THREE.Color,
+    // FIX: Use readonly array for compatibility with `as const` presets.
+    colors: readonly number[] | THREE.Color,
     speed: readonly [number, number],
     fade: THREE.Vector2
   ) {
@@ -711,7 +710,8 @@ const sideSticksVertex = `
     float height = aMetrics.y;
 
     transformed.xy *= vec2(width, height);
-    float time = mod(uTime * 60. * 2. + aOffset, uTravelLength);
+    // FIX: Ensure all numeric literals in GLSL are explicitly floats to avoid type errors.
+    float time = mod(uTime * 60.0 * 2.0 + aOffset, uTravelLength);
 
     transformed = (rotationY(3.14/2.) * vec4(transformed,1.)).xyz;
     transformed.z += - uTravelLength + time;
